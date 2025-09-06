@@ -18,6 +18,7 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ResourceLoader;
 
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
@@ -61,6 +62,9 @@ public class TomcatConfig {
 //    }
 
     private static class CustomTomcatServletWebServerFactory extends TomcatServletWebServerFactory {
+
+        private ResourceLoader resourceLoader;
+
         public CustomTomcatServletWebServerFactory() {
             super();
             this.setDisableMBeanRegistry(false);
@@ -84,6 +88,12 @@ public class TomcatConfig {
         @Override
         public WebServer getWebServer(ServletContextInitializer... initializers) {
             return super.getWebServer(initializers);
+        }
+
+        @Override
+        public void setResourceLoader(ResourceLoader resourceLoader) {
+            this.resourceLoader = resourceLoader;
+            super.setResourceLoader(resourceLoader);
         }
 
         @Override
